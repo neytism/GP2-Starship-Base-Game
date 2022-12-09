@@ -32,6 +32,15 @@ public class Weapon : MonoBehaviour
         //get object from object pool instead of instantiating directly
         GameObject bullet = _bulletPool.CreateObject();
         bullet.GetComponent<Rigidbody2D>().AddForce(_player.FirePoint.up * _player.FireForce,ForceMode2D.Impulse);
+        StartCoroutine(BulletLife(bullet));
+        
 
+    }
+
+    IEnumerator BulletLife(GameObject bullet)
+    {
+        
+        yield return new WaitForSeconds(3);
+        bullet.SetActive(false);
     }
 }
