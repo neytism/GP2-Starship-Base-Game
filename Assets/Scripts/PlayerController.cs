@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     //for movements
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private Rigidbody2D _rb;
-    private Vector2 _moveDirection; 
+    private Vector2 _moveDirection;
     
     //for aiming
     private Vector2 _mousePosition; 
@@ -37,27 +37,35 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //movement
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
-
+        _moveDirection = new Vector2(moveX, moveY);
+        
+        _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        
+        //fire
         if (Input.GetMouseButton(0) && Time.time > _nextFire)
         {
             _nextFire = Time.time + _fireRate;
             _weapon.FireWeapon();
         }
-
-        _moveDirection = new Vector2(moveX, moveY).normalized;
-        _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     private void FixedUpdate()
     {
-        _rb.velocity = new Vector2(_moveDirection.x * _moveSpeed, _moveDirection.y * _moveSpeed);
+        //player full stop 
+        //_rb.velocity = new Vector2(_moveDirection.x * _moveSpeed, _moveDirection.y * _moveSpeed);
+        
+        //player drift
+        _rb.AddForce(new Vector2(_moveDirection.x * _moveSpeed, _moveDirection.y * _moveSpeed));
 
         Vector2 aimDirection = _mousePosition - _rb.position;
         float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;  //faces towards target
         _rb.rotation = aimAngle;
     }
+
+    
 
     
 }
