@@ -29,11 +29,13 @@ public class ObjectPool : MonoBehaviour
       this._poolSize = poolSize;
    }
 
-   public GameObject CreateObject()
+   public GameObject CreateObject()  //returns the game object
    {
       CreateObjectParentIfNeeded();
 
       GameObject spawnedObject = null;
+      
+      //creates gameobjects 
 
       if (_objectPool.Count < _poolSize)
       {
@@ -41,7 +43,7 @@ public class ObjectPool : MonoBehaviour
          spawnedObject.name = transform.root.name + "_" + _objectToPool.name + "_" + _objectPool.Count;
          spawnedObject.transform.SetParent(spawnedObjectsParent);
       }
-      else
+      else  
       {
          spawnedObject = _objectPool.Dequeue();
          spawnedObject.transform.position = transform.position;

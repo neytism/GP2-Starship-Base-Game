@@ -9,11 +9,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-   [SerializeField] public float TimeLeft = 3;
 
-   private void OnCollisionEnter2D(Collision2D col)
+   private void OnCollisionEnter2D(Collision2D col) 
    {
-      //Destroy(gameObject);
       gameObject.SetActive(false);
    }
 

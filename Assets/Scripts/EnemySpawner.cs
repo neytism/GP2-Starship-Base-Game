@@ -19,13 +19,13 @@ public class EnemySpawner : MonoBehaviour
         StartCoroutine(SpawnEnemy());
     }
 
-    IEnumerator SpawnEnemy()
+    IEnumerator SpawnEnemy()  //spawns enemy based on radius around player
     {
         Vector2 spawnPos = FindObjectOfType<Player>().transform.position;
         spawnPos += Random.insideUnitCircle.normalized * _spawnRadius;
 
         Instantiate(enemies[Random.Range(0, enemies.Length)], spawnPos, Quaternion.identity);
         yield return new WaitForSeconds(_time);
-        StartCoroutine(SpawnEnemy());
+        StartCoroutine(SpawnEnemy());  //loops
     }
 }

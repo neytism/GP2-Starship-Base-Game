@@ -25,15 +25,17 @@ public class Player : MonoBehaviour
     public void ReduceHealth(float value)
     {
 
-        if (_currentHealth > 0)
+        if (_currentHealth > 0) // if player is not dead
         {
             _currentHealth -= value;
             
             Debug.Log($"Health: {_currentHealth}");
             
-            if (_currentHealth <= 0)
+            if (_currentHealth <= 0)  //if player is dead
             {
-                //gameOverSound.Play();
+                
+                //insert death sound here
+                
                 GameObject particle = Instantiate(diePEffect, transform.position, Quaternion.identity);
                 Destroy(particle, 3);
                 gameObject.SetActive(false);
@@ -41,10 +43,11 @@ public class Player : MonoBehaviour
                 Debug.Log("GAME OVER");
             }
         }
+        Debug.Log("Player Damaged");
         HPBarUpdate();
     }
     
-    private void HPBarUpdate()
+    private void HPBarUpdate() //updates health bar using image fill
     {
         HPBar.fillAmount =  _currentHealth/ _maxHealth;
     }

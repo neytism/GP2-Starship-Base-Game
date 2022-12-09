@@ -10,7 +10,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     private Player _player;
-    private float _damage = 1;
+    [SerializeField] private float _damage = 1;
     public GameObject diePEffect;
 
 
@@ -21,18 +21,18 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag.Equals("Player") || col.gameObject.tag.Equals("Bullet"))
+        if (col.gameObject.tag.Equals("Player") || col.gameObject.tag.Equals("Bullet")) 
         {
+            //deploys particle before destroying object
+            //particle system can be converted to pooling system if time possible
             GameObject particle = Instantiate(diePEffect, transform.position, Quaternion.identity);
             Destroy(particle, 3);
-           gameObject.SetActive(false);
-           
-           if (col.gameObject.tag.Equals("Player"))
-           {
+
+            if (col.gameObject.tag.Equals("Player")) {
                _player.ReduceHealth(_damage);
            }
-           
-           Debug.Log("Player Damaged");
+            
+            Destroy(gameObject);
         }
     }
 

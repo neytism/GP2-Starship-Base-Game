@@ -9,9 +9,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    //for movements
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private Rigidbody2D _rb;
+    private Vector2 _moveDirection; 
     
+    //for aiming
+    private Vector2 _mousePosition; 
+    
+    
+    //for weapon
     [SerializeField] private Weapon _weapon;
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _firePoint;
@@ -20,10 +27,6 @@ public class PlayerController : MonoBehaviour
     private float _nextFire = 0f;
 
     
-
-    private Vector2 _moveDirection; 
-    private Vector2 _mousePosition; 
-
     public float MoveSpeed => _moveSpeed;
     public Transform FirePoint => _firePoint;
     public float FireForce => _fireForce;
@@ -52,7 +55,7 @@ public class PlayerController : MonoBehaviour
         _rb.velocity = new Vector2(_moveDirection.x * _moveSpeed, _moveDirection.y * _moveSpeed);
 
         Vector2 aimDirection = _mousePosition - _rb.position;
-        float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
+        float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;  //faces towards target
         _rb.rotation = aimAngle;
     }
 

@@ -23,19 +23,13 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
-        _bulletPool.Initialize(_player.BulletPrefab,_bulletPoolCount);
+        _bulletPool.Initialize(_player.BulletPrefab,_bulletPoolCount); // size depends on fore rate of player
     }
     
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
     public void FireWeapon()
     {
-        //GameObject bullet = Instantiate(_bulletPrefab, _firePoint.position, _firePoint.rotation);
+        //get object from object pool instead of instantiating directly
         GameObject bullet = _bulletPool.CreateObject();
         bullet.GetComponent<Rigidbody2D>().AddForce(_player.FirePoint.up * _player.FireForce,ForceMode2D.Impulse);
 

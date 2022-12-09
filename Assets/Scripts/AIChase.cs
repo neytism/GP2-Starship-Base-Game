@@ -23,7 +23,7 @@ public class AIChase : MonoBehaviour
         Chase();
     }
 
-    public void Chase()
+    public void Chase() //follow player while facing target
     {
         Vector2 direction = _player.transform.position - transform.position;
         direction.Normalize();
