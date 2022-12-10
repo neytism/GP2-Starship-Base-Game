@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: Swift
   Cooldown: 3
   ActiveTime: 0.6
-  DashVelocity: 10
+  DashVelocity: 50
