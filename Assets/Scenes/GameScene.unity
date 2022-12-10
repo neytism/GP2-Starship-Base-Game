@@ -7950,6 +7950,7 @@ GameObject:
   - component: {fileID: 1245975558}
   - component: {fileID: 1245975553}
   - component: {fileID: 1245975559}
+  - component: {fileID: 1245975560}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -7969,6 +7970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fcc30102731940449a470c8f8e283c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MoveDirection: {x: 0, y: 0}
   _moveSpeed: 20
   _rb: {fileID: 1245975555}
   _weapon: {fileID: 477175756}
@@ -8138,6 +8140,20 @@ MonoBehaviour:
   _maxHealth: 10
   _currentHealth: 10
   diePEffect: {fileID: 6361326539378936758, guid: 12fee52395f8ce84e99344aa1aebb883, type: 3}
+--- !u!114 &1245975560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245975552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eafccea5e471238449d387c62b08ba9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Ability: {fileID: 11400000, guid: 9dde1063366ec364b9095609fc692261, type: 2}
+  key: 304
 --- !u!1 &1258133777
 GameObject:
   m_ObjectHideFlags: 0

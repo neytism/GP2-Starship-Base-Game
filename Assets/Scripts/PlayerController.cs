@@ -9,10 +9,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
+    [HideInInspector] public Vector2 MoveDirection;
     //for movements
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private Rigidbody2D _rb;
-    private Vector2 _moveDirection;
+    //private Vector2 _moveDirection;
     
     //for aiming
     private Vector2 _mousePosition; 
@@ -32,16 +34,16 @@ public class PlayerController : MonoBehaviour
     public float FireForce => _fireForce;
     public GameObject BulletPrefab => _bulletPrefab;
 
+    
+
+    
+
    
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        //movement
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveY = Input.GetAxisRaw("Vertical");
-        _moveDirection = new Vector2(moveX, moveY);
-        
+
         _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         
         //fire
@@ -52,13 +54,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
+        //movement
+        MoveDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));// Direction Changed For Dash Ability
         //player full stop 
         //_rb.velocity = new Vector2(_moveDirection.x * _moveSpeed, _moveDirection.y * _moveSpeed);
         
         //player drift
-        _rb.AddForce(new Vector2(_moveDirection.x * _moveSpeed, _moveDirection.y * _moveSpeed));
+        _rb.AddForce(new Vector2(MoveDirection.x * _moveSpeed, MoveDirection.y * _moveSpeed));
 
         Vector2 aimDirection = _mousePosition - _rb.position;
         float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;  //faces towards target
