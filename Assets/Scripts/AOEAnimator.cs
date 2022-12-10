@@ -15,10 +15,13 @@ using UnityEngine;
 public class AOEAnimator : MonoBehaviour
 {
     
-    private Animator _animatorComponent;
-    private bool _IsAbilityUsed;
+    [SerializeField] private Animator _animatorComponent;
+    private bool _abilityReady;
     private Renderer _rendererComponent;
-    
+
+    //[SerializeField] private float _cooldown;
+    private bool _playCooldown;
+    private KeyCode _space;
     
     private const string _aoe = "AOE";
     // Start is called before the first frame update
@@ -26,15 +29,15 @@ public class AOEAnimator : MonoBehaviour
 
     private void Awake()
     {
-        //_gameObject.SetActive(false);
+        //gameObject.SetActive(false);
         _animatorComponent = GetComponent<Animator>();
         _rendererComponent = GetComponent<Renderer>();
     }
 
     private void Start()
     {
-        gameObject.SetActive(false);
-        _IsAbilityUsed = false;
+        
+        _abilityReady = true;
         _animatorComponent.gameObject.GetComponent<Animator>().enabled = false;
     }
 
@@ -43,45 +46,27 @@ public class AOEAnimator : MonoBehaviour
     {
         
         
-        if (Input.GetKeyDown(KeyCode.Space) && _IsAbilityUsed == false)
+        if (Input.GetKey(KeyCode.Space) && _abilityReady == true)
         {
             AoeSkill();
-        }
-        else
-        {
-            _animatorComponent.gameObject.GetComponent<Animator>().enabled = false;
         }
     }
 
     private void AoeSkill()
     {
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
         Debug.Log("AOE IS Pressed");
         _animatorComponent.gameObject.GetComponent<Animator>().enabled = true;
-        _animatorComponent.Play(_aoe);
-        //IsAOEUsed();
-        
+        _animatorComponent.SetTrigger("OnTrigger");
+        _abilityReady = false;
+        StartCoroutine("wait");
         Debug.Log("AnimationPlay");
     }
-/*
-    public void IsAOEUsed()
+    public IEnumerator wait()
     {
-        if (_IsAbilityUsed = true)
-        {
-            Debug.Log("ABILITY IS USED");
-            EMP.SetActive(false);
-        }
-    }
-
-*/
-    public void Disable()
-    {
-        _rendererComponent.enabled = false;
-    }
-
-    public void Enable()
-    {
-        _rendererComponent.enabled = true;
+        yield return new WaitForSeconds(10);
+        Debug.Log("Ability Charged");
+        _abilityReady = true;
     }
 }
 

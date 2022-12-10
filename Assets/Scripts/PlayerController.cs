@@ -34,11 +34,16 @@ public class PlayerController : MonoBehaviour
     public float FireForce => _fireForce;
     public GameObject BulletPrefab => _bulletPrefab;
 
-    
 
-    
+    private void Awake()
+    {
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
 
-   
+    private void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+    }
 
     // Update is called once per frame
     private void Update()
@@ -69,6 +74,10 @@ public class PlayerController : MonoBehaviour
         _rb.rotation = aimAngle;
     }
 
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.Gameplay;
+    }
     
 
     
