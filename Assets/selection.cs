@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //
 //  .cs
@@ -11,15 +13,31 @@ using UnityEngine;
 //
 public class selection : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject[] Characters;
+    public int SelectedCharacter = 0;
+
+    public void NextCharacter()
     {
-        
+        Characters[SelectedCharacter].SetActive(false); 
+           SelectedCharacter = (SelectedCharacter + 1) % Characters.Length;
+        Characters[SelectedCharacter].SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PreviousCharacter()
     {
-        
+        Characters[SelectedCharacter].SetActive(false);
+        SelectedCharacter--;
+        if (SelectedCharacter < 0)
+        {
+            SelectedCharacter += Characters.Length;
+        }
+        Characters[SelectedCharacter].SetActive(true);
     }
+
+    public void StartGame()
+    {
+        PlayerPrefs.SetInt("SelectedCharacter", SelectedCharacter);
+        SceneManager.LoadScene(2, LoadSceneMode.Single);
+    }
+
 }
