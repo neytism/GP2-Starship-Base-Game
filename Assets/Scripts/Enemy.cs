@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 //
@@ -12,12 +13,32 @@ public class Enemy : MonoBehaviour
     private Player _player;
     [SerializeField] private float _damage = 1;
     public GameObject diePEffect;
+    [SerializeField] private GameObject _enemyBullet;
+    [SerializeField] private Transform _enemyFirePoint;
+    [SerializeField] private float _enemyFireForce;
+    private float timeBtwShot;
+    [SerializeField] private float startTimeBtwShots;
 
     [SerializeField] private AudioClip _hitSound;
+    
+    [SerializeField] private bool _canFire = true;
+    
+    
     private void Awake()
     {
         _player = GameObject.FindObjectOfType<Player>();
+        timeBtwShot = startTimeBtwShots;
     }
+
+    private void Update()
+    {
+        if (_canFire)
+        {
+            EnemyFire();
+        }
+       
+    }
+
 
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -38,4 +59,25 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void EnemyFire()
+    {
+        if (timeBtwShot <= 0)
+        {
+            GameObject bullet = Instantiate(_enemyBullet, _enemyFirePoint.position, Quaternion.identity);
+            bullet.GetComponent<Rigidbody2D>().AddForce(_enemyFirePoint.up * _enemyFireForce,ForceMode2D.Impulse);
+            timeBtwShot = startTimeBtwShots;
+            StartCoroutine(BulletLife(bullet));
+        }
+        else
+        {
+            timeBtwShot -= Time.deltaTime;
+        }
+    }
+    
+    
+    IEnumerator BulletLife(GameObject bullet)
+    {
+        yield return new WaitForSeconds(3);
+        Destroy(bullet);
+    }
 }
