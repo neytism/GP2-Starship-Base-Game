@@ -8,6 +8,27 @@ using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
+    #region Instance
+
+    public static PlayerManager Instance => _instance;
+    private static PlayerManager _instance;
+
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+        
+        DontDestroyOnLoad(this);
+    }
+
+    #endregion
+    
     [SerializeField] private List<GameObject> _characters;
     [SerializeField] private List<String> _names;
     [SerializeField] private List<String> _description;
@@ -95,7 +116,7 @@ public class PlayerManager : MonoBehaviour
 
     public void PlayGame()
     {
-        PrefabUtility.SaveAsPrefabAsset(gameObject, "Assets/Prefabs/PlayerManager.prefab");
+        //PrefabUtility.SaveAsPrefabAsset(gameObject, "Assets/Prefabs/PlayerManager.prefab");
         SceneManager.LoadScene("GameScene");
     }
     
