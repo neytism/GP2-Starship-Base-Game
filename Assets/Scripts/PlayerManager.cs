@@ -17,7 +17,7 @@ public class PlayerManager : MonoBehaviour
     private TextMeshProUGUI _characterName;
     private TextMeshProUGUI _characterDescription;
 
-    public int selectedCharacter = 1;
+    [HideInInspector] public int selectedCharacter;
     
     private GameObject _weaponPrefab1;
     private GameObject _weaponPrefab2;
@@ -26,7 +26,15 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private AbilityManager _ability1;
     [SerializeField] private AbilityManager _ability2;
     [SerializeField] private AbilityManager _ability3;
-    
+
+    public void Init(int value)
+    {
+        selectedCharacter = value;
+        _characterName = GameObject.Find("Name").GetComponent<TextMeshProUGUI>();
+        _characterDescription = GameObject.Find("Description").GetComponent<TextMeshProUGUI>();
+        _characterName.text = _names[selectedCharacter];
+        _characterDescription.text = _description[selectedCharacter];
+    }
 
     public GameObject SelectWeaponType(int index)
     {
