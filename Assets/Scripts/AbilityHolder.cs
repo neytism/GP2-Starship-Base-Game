@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+<<<<<<< HEAD
 using UnityEngine.UI;
+=======
+>>>>>>> ff8eb9e9b39fd100170aed4445efd7ced71805b1
 using Debug = UnityEngine.Debug;
 
 //
@@ -15,6 +18,7 @@ using Debug = UnityEngine.Debug;
 //
 public class AbilityHolder : MonoBehaviour
 {
+<<<<<<< HEAD
     private AbilityManager _ability;
     private float _cooldownTime;
     
@@ -39,6 +43,11 @@ public class AbilityHolder : MonoBehaviour
         get => _isCoolDown;
         set => _isCoolDown = value;
     }
+=======
+    public AbilityManager Ability;
+    private float cooldownTime;
+    private float activeTIme;
+>>>>>>> ff8eb9e9b39fd100170aed4445efd7ced71805b1
 
     enum AbilityState
     {
@@ -50,6 +59,7 @@ public class AbilityHolder : MonoBehaviour
     AbilityState state = AbilityState.ready;
 
     public KeyCode key;
+<<<<<<< HEAD
 
     private void Awake()
     {
@@ -60,6 +70,9 @@ public class AbilityHolder : MonoBehaviour
         _CDBar.fillAmount = 1;
     }
 
+=======
+    
+>>>>>>> ff8eb9e9b39fd100170aed4445efd7ced71805b1
     void Update()
     {
         switch (state)
@@ -67,6 +80,7 @@ public class AbilityHolder : MonoBehaviour
            case AbilityState.ready:
                if (Input.GetKeyDown(key))
                {
+<<<<<<< HEAD
                    _ability.Activate(gameObject);
                    state = AbilityState.active;
                    _activeTime = _ability.ActiveTime;
@@ -78,10 +92,22 @@ public class AbilityHolder : MonoBehaviour
                    _activeTime -= Time.deltaTime;
                    _CDBar.fillAmount = _activeTime;
 
+=======
+                   Ability.Activate(gameObject);
+                   state = AbilityState.active;
+                   activeTIme = Ability.ActiveTime;
+               }
+               break;
+           case AbilityState.active:
+               if (activeTIme > 0)
+               {
+                   activeTIme -= Time.deltaTime;
+>>>>>>> ff8eb9e9b39fd100170aed4445efd7ced71805b1
                }
                else
                {
                    state = AbilityState.cooldown;
+<<<<<<< HEAD
                    _cooldownTime = _ability.Cooldown;
                }
                break;
@@ -92,6 +118,15 @@ public class AbilityHolder : MonoBehaviour
                    _cooldownTime -= Time.deltaTime;
                    _CDBar.fillAmount = -(_cooldownTime - _ability.Cooldown) /  _ability.Cooldown;
                   
+=======
+                   cooldownTime = Ability.Cooldown;
+               }
+               break;
+           case AbilityState.cooldown:
+               if (cooldownTime > 0)
+               {
+                   cooldownTime -= Time.deltaTime;
+>>>>>>> ff8eb9e9b39fd100170aed4445efd7ced71805b1
                }
                else
                {
@@ -100,6 +135,7 @@ public class AbilityHolder : MonoBehaviour
                }
                break; 
         }
+<<<<<<< HEAD
 
     }
 
@@ -173,4 +209,7 @@ public class AbilityHolder : MonoBehaviour
         Debug.Log("Explode End");
     }
 
+=======
+    }
+>>>>>>> ff8eb9e9b39fd100170aed4445efd7ced71805b1
 }
