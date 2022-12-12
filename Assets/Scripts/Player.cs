@@ -15,39 +15,68 @@ public class Player : MonoBehaviour
     
     [SerializeField] private float _maxHealth = 10;
     [SerializeField] private float _currentHealth;
+    
+    private PlayerManager _playerManager;
+
+    private Color _color;
+    
+    private bool _isInvincible = false;
+
+    public bool IsInvincible
+    {
+        get => _isInvincible;
+        set => _isInvincible = value;
+    }
+
+    [SerializeField] private GameObject _beam;
+    [SerializeField] private GameObject _aoe;
+
+    public GameObject Beam => _beam;
+    public GameObject AOE => _aoe;
+
 
     public GameObject diePEffect;
+
+    [SerializeField] private AudioClip _deathSound;
+    [SerializeField] private AudioClip _gameOver;
+
+    
     private void Awake()
     {
+        _playerManager = GameObject.FindObjectOfType<PlayerManager>();
+        _color = _playerManager.SelectCharacterSprite(_playerManager.selectedCharacter);
+        gameObject.GetComponent<SpriteRenderer>().color = _color;
         _currentHealth = _maxHealth;
         HPBarUpdate();
     }
     
     public void ReduceHealth(float value)
     {
-
-        if (_currentHealth > 0) // if player is not dead
+        if (!_isInvincible)
         {
-            _currentHealth -= value;
-            
-            Debug.Log($"Health: {_currentHealth}");
-            
-            if (_currentHealth <= 0)  //if player is dead
+            if (_currentHealth > 0) // if player is not dead
             {
+                _currentHealth -= value;
+            
+                Debug.Log($"Health: {_currentHealth}");
+            
+                if (_currentHealth <= 0)  //if player is dead
+                {
                 
-                //insert death sound here
-                
-                GameObject particle = Instantiate(diePEffect, transform.position, Quaternion.identity);
-                Destroy(particle, 3);
-                gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                gameObject.GetComponent<PolygonCollider2D>().enabled = false;
-                StartCoroutine(ShowGameOverScreen()); 
-                
-                Debug.Log("GAME OVER");
+                    //insert death sound here
+                    AudioSource.PlayClipAtPoint(_deathSound, gameObject.transform.position);
+                    GameObject particle = Instantiate(diePEffect, transform.position, Quaternion.identity);
+                    Destroy(particle, 3);
+                    gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                    gameObject.GetComponent<PolygonCollider2D>().enabled = false;
+                    StartCoroutine(ShowGameOverScreen());
+                    Debug.Log("GAME OVER");
+                }
             }
+            Debug.Log("Player Damaged");
+            HPBarUpdate();
         }
-        Debug.Log("Player Damaged");
-        HPBarUpdate();
+
     }
     
     private void HPBarUpdate() //updates health bar using image fill
@@ -57,9 +86,12 @@ public class Player : MonoBehaviour
     
     IEnumerator ShowGameOverScreen() {
         yield return new WaitForSeconds(1.5f);
+        AudioSource.PlayClipAtPoint(_gameOver, gameObject.transform.position);
         gameOverScreen.SetActive(true);
         
         Time.timeScale = 0f;
     }
+
+    
 
 }

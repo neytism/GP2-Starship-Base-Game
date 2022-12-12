@@ -12,31 +12,35 @@ public class PlayerController : MonoBehaviour
     //for movements
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private Rigidbody2D _rb;
-    private Vector2 _moveDirection;
+    public Vector2 _moveDirection;
     
     //for aiming
     private Vector2 _mousePosition; 
     
     
     //for weapon
-    [SerializeField] private Weapon _weapon;
-    [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private Transform _firePoint;
-    [SerializeField] private float _fireForce = 20f;
-    [SerializeField] private float _fireRate = .1f;
+    private GameObject _weapon;
+    private Transform _firePoint;
     private float _nextFire = 0f;
 
-    
-    public float MoveSpeed => _moveSpeed;
-    public Transform FirePoint => _firePoint;
-    public float FireForce => _fireForce;
-    public GameObject BulletPrefab => _bulletPrefab;
+    private PlayerManager _playerManager;
 
-   
+    [SerializeField] private AudioSource _shootSound;
+    
+    
+    public Transform FirePoint => _firePoint;
+
+    private void Awake()
+    {
+        _playerManager = GameObject.FindObjectOfType<PlayerManager>();
+        _weapon = _playerManager.SelectWeaponType(_playerManager.selectedCharacter);
+    }
 
     // Update is called once per frame
     void Update()
     {
+        _firePoint = _weapon.GetComponent<Transform>();
+        
         //movement
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
@@ -47,8 +51,9 @@ public class PlayerController : MonoBehaviour
         //fire
         if (Input.GetMouseButton(0) && Time.time > _nextFire)
         {
-            _nextFire = Time.time + _fireRate;
-            _weapon.FireWeapon();
+            _shootSound.Play();
+            _nextFire = Time.time + _weapon.GetComponent<Weapon>().FireRate;
+            _weapon.GetComponent<Weapon>().FireWeapon();
         }
     }
 

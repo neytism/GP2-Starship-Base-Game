@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _damage = 1;
     public GameObject diePEffect;
 
-
+    [SerializeField] private AudioClip _hitSound;
     private void Awake()
     {
         _player = GameObject.FindObjectOfType<Player>();
@@ -25,13 +25,15 @@ public class Enemy : MonoBehaviour
         {
             //deploys particle before destroying object
             //particle system can be converted to pooling system if time possible
+            AudioSource.PlayClipAtPoint(_hitSound, gameObject.transform.position);
             GameObject particle = Instantiate(diePEffect, transform.position, Quaternion.identity);
             Destroy(particle, 3);
+            
 
             if (col.gameObject.tag.Equals("Player")) {
                _player.ReduceHealth(_damage);
            }
-            
+           
             Destroy(gameObject);
         }
     }

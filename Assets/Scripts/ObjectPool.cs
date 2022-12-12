@@ -11,64 +11,68 @@ using Object = UnityEngine.Object;
 
 public class ObjectPool : MonoBehaviour
 {
-   [SerializeField] private GameObject _objectToPool;
-   [SerializeField] private int _poolSize;
+    [SerializeField]
+    protected GameObject objectToPool;
+    [SerializeField]
+    protected int poolSize = 10;
 
-   private Queue<GameObject> _objectPool;
+    protected Queue<GameObject> objectPool;
 
-   public Transform spawnedObjectsParent;
+    public Transform spawnedObjectsParent;
 
-   private void Awake()
-   {
-      _objectPool = new Queue<GameObject>(0);
-   }
+    public bool alwaysDestroy = false;
 
-   public void Initialize(GameObject objectToPool, int poolSize = 10)
-   {
-      this._objectToPool = objectToPool;
-      this._poolSize = poolSize;
-   }
+    private void Awake()
+    {
+        objectPool = new Queue<GameObject>();
 
-   public GameObject CreateObject()  //returns the game object
-   {
-      CreateObjectParentIfNeeded();
+    }
 
-      GameObject spawnedObject = null;
-      
-      //creates gameobjects 
+    public void Initialize(GameObject objectToPool, int poolSize = 10)
+    {
+        this.objectToPool = objectToPool;
+        this.poolSize = poolSize;
 
-      if (_objectPool.Count < _poolSize)
-      {
-         spawnedObject = Instantiate(_objectToPool, transform.position, quaternion.identity);
-         spawnedObject.name = transform.root.name + "_" + _objectToPool.name + "_" + _objectPool.Count;
-         spawnedObject.transform.SetParent(spawnedObjectsParent);
-      }
-      else  
-      {
-         spawnedObject = _objectPool.Dequeue();
-         spawnedObject.transform.position = transform.position;
-         spawnedObject.transform.rotation = Quaternion.identity;
-         spawnedObject.SetActive(true);
-      }
-      
-      _objectPool.Enqueue(spawnedObject);
-      return spawnedObject;
-   }
+    }
 
-   private void CreateObjectParentIfNeeded()
-   {
-      if (spawnedObjectsParent == null)
-      {
-         string name = "ObjectPool_" + _objectToPool.name;
-         var parentObject = GameObject.Find(name);
-         if (parentObject != null)
-         {
-            spawnedObjectsParent = parentObject.transform;
-         }
-         else
-         {
-            spawnedObjectsParent = new GameObject(name).transform;
-         }
-      }
-   }
+    public GameObject CreateObject()
+    {
+        CreateObjectParentIfNeeded();
+
+        GameObject spawnedObject = null;
+
+
+        if (objectPool.Count < poolSize)
+        {
+            spawnedObject = Instantiate(objectToPool, transform.position, Quaternion.identity);
+            spawnedObject.name = transform.root.name + "_" + objectToPool.name + "_" + objectPool.Count;
+            spawnedObject.transform.SetParent(spawnedObjectsParent);
+        }
+        else
+        {
+            spawnedObject = objectPool.Dequeue();
+            spawnedObject.transform.position = transform.position;
+            spawnedObject.transform.rotation = Quaternion.identity;
+            spawnedObject.SetActive(true);
+        }
+
+        objectPool.Enqueue(spawnedObject);
+        return spawnedObject;
+    }
+
+    private void CreateObjectParentIfNeeded()
+    {
+        if (spawnedObjectsParent == null)
+        {
+            string name = "ObjectPool_" + objectToPool.name;
+            var parentObject = GameObject.Find(name);
+            if (parentObject != null)
+                spawnedObjectsParent = parentObject.transform;
+            else
+            {
+                spawnedObjectsParent = new GameObject(name).transform;
+            }
+
+        }
+    }
 }
