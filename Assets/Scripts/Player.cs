@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,12 @@ public class Player : MonoBehaviour
     
     [SerializeField] private float _maxHealth = 10;
     [SerializeField] private float _currentHealth;
+    [SerializeField] private int _killCount;
     
+    [SerializeField] private TextMeshProUGUI _killCountText;
+
+    
+
     private PlayerManager _playerManager;
 
     private Color _color;
@@ -27,6 +33,13 @@ public class Player : MonoBehaviour
         get => _isInvincible;
         set => _isInvincible = value;
     }
+    
+    public int KillCount
+    {
+        get => _killCount;
+        set => _killCount = value;
+    }
+
 
     [SerializeField] private GameObject _beam;
     [SerializeField] private GameObject _aoe;
@@ -92,6 +105,17 @@ public class Player : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    
+    public void AddKillCount()
+    {
+        _killCount++;
+        UpdateTextKillCount();
+    }
+
+    private void UpdateTextKillCount()
+    {
+        _killCountText.text = _killCount.ToString();
+    }
+
+
 
 }

@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
             if (col.gameObject.tag.Equals("Player")) {
                _player.ReduceHealth(_damage);
            }
-           
+           _player.AddKillCount();
             Destroy(gameObject);
         }
     }
