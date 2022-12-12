@@ -8,8 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
-
-    //singleton end
     [SerializeField] private List<GameObject> _characters;
     [SerializeField] private List<String> _names;
     [SerializeField] private List<String> _description;
@@ -30,10 +28,7 @@ public class PlayerManager : MonoBehaviour
     public void Init(int value)
     {
         selectedCharacter = value;
-        _characterName = GameObject.Find("Name").GetComponent<TextMeshProUGUI>();
-        _characterDescription = GameObject.Find("Description").GetComponent<TextMeshProUGUI>();
-        _characterName.text = _names[selectedCharacter];
-        _characterDescription.text = _description[selectedCharacter];
+        UpdateSelected(selectedCharacter);
     }
 
     public GameObject SelectWeaponType(int index)
@@ -84,12 +79,7 @@ public class PlayerManager : MonoBehaviour
             selectedCharacter = 0;
         }
 
-        _sr.color = _characters[selectedCharacter].GetComponent<SpriteRenderer>().color;
-        _characterName = GameObject.Find("Name").GetComponent<TextMeshProUGUI>();
-        _characterDescription = GameObject.Find("Description").GetComponent<TextMeshProUGUI>();
-        _characterName.text = _names[selectedCharacter];
-        _characterDescription.text = _description[selectedCharacter];
-        Debug.Log($"Selected: {selectedCharacter}");
+        UpdateSelected(selectedCharacter);
     }
     
     public void BackOption()
@@ -100,12 +90,7 @@ public class PlayerManager : MonoBehaviour
             selectedCharacter = _characters.Count-1;
         }
 
-        _sr.color = _characters[selectedCharacter].GetComponent<SpriteRenderer>().color;
-        _characterName = GameObject.Find("Name").GetComponent<TextMeshProUGUI>();
-        _characterDescription = GameObject.Find("Description").GetComponent<TextMeshProUGUI>();
-        _characterName.text = _names[selectedCharacter];
-        _characterDescription.text = _description[selectedCharacter];
-        Debug.Log($"Selected: {selectedCharacter}");
+        UpdateSelected(selectedCharacter);
     }
 
     public void PlayGame()
@@ -119,4 +104,16 @@ public class PlayerManager : MonoBehaviour
         //UIClickSound.Play();
         Application.Quit();
     }
+
+    public void UpdateSelected(int value)
+    {
+        _sr = GameObject.Find("SelectedSkin").GetComponent<SpriteRenderer>();
+        _sr.color = _characters[value].GetComponent<SpriteRenderer>().color;
+        _characterName = GameObject.Find("Name").GetComponent<TextMeshProUGUI>();
+        _characterDescription = GameObject.Find("Description").GetComponent<TextMeshProUGUI>();
+        _characterName.text = _names[value];
+        _characterDescription.text = _description[value];
+        Debug.Log($"Selected: {value}");
+    }
+    
 }
