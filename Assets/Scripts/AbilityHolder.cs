@@ -34,6 +34,10 @@ public class AbilityHolder : MonoBehaviour
     [SerializeField] public AudioClip _explodeSound;
     [SerializeField] public AudioClip _swiftSound;
     
+    AbilityState state = AbilityState.ready;
+
+    public KeyCode key;
+    
     public bool IsCoolDown
     {
         get => _isCoolDown;
@@ -47,19 +51,16 @@ public class AbilityHolder : MonoBehaviour
         cooldown
     }
 
-    AbilityState state = AbilityState.ready;
-
-    public KeyCode key;
-
     private void Awake()
     {
         _playerManager = GameObject.FindObjectOfType<PlayerManager>();
-        _ability = _playerManager.SelectAbilityType(_playerManager.selectedCharacter);
+        _ability = _playerManager.SelectAbilityType(PlayerManager.Instance.SelectedCharacter);
         _duration = _ability.ActiveTime;
         _cooldown = _ability.Cooldown;
         _CDBar.fillAmount = 1;
     }
 
+    // for updating cooldowns
     void Update()
     {
         switch (state)
@@ -103,25 +104,6 @@ public class AbilityHolder : MonoBehaviour
 
     }
 
-    /*public void UpdateCDBar()
-    {
-        if (!_isCoolDown)
-        {
-            _isCoolDown = false;
-            _CDBar.fillAmount = 1;
-        }
-        
-        if (_isCoolDown)
-        {
-            _CDBar.fillAmount -= 1 / _cooldown * Time.deltaTime;
-            if (_CDBar.fillAmount <= 0)
-            {
-                _CDBar.fillAmount = 0;
-                _isCoolDown = false;
-            }
-        }
-    }*/
-    
     //for swift dash
     public void BeInvincible()
     {

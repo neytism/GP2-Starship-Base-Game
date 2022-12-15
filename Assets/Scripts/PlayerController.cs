@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _playerManager = GameObject.FindObjectOfType<PlayerManager>();
-        _weapon = _playerManager.SelectWeaponType(_playerManager.selectedCharacter);
+        _weapon = _playerManager.SelectWeaponType(PlayerManager.Instance.SelectedCharacter);
     }
 
     // Update is called once per frame

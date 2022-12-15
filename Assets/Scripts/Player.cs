@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _playerManager = GameObject.FindObjectOfType<PlayerManager>();
-        _color = _playerManager.SelectCharacterSprite(_playerManager.selectedCharacter);
+        _color = _playerManager.SelectCharacterSprite(PlayerManager.Instance.SelectedCharacter);
         gameObject.GetComponent<SpriteRenderer>().color = _color;
         _currentHealth = _maxHealth;
         HPBarUpdate();

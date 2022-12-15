@@ -36,8 +36,10 @@ public class PlayerManager : MonoBehaviour
     private TextMeshProUGUI _characterName;
     private TextMeshProUGUI _characterDescription;
 
-    [HideInInspector] public int selectedCharacter;
-    
+    private static int _selectedCharacter;
+
+    public int SelectedCharacter => _selectedCharacter;
+
     private GameObject _weaponPrefab1;
     private GameObject _weaponPrefab2;
     private GameObject _weaponPrefab3;
@@ -48,8 +50,8 @@ public class PlayerManager : MonoBehaviour
 
     public void Init(int value)
     {
-        selectedCharacter = value;
-        UpdateSelected(selectedCharacter);
+        _selectedCharacter = value;
+        UpdateSelected(_selectedCharacter);
     }
 
     public GameObject SelectWeaponType(int index)
@@ -94,24 +96,24 @@ public class PlayerManager : MonoBehaviour
 
     public void NextOption()
     {
-        selectedCharacter += 1;
-        if (selectedCharacter == _characters.Count)
+        _selectedCharacter += 1;
+        if (_selectedCharacter == _characters.Count)
         {
-            selectedCharacter = 0;
+            _selectedCharacter = 0;
         }
 
-        UpdateSelected(selectedCharacter);
+        UpdateSelected(_selectedCharacter);
     }
     
     public void BackOption()
     {
-        selectedCharacter -= 1;
-        if (selectedCharacter < 0)
+        _selectedCharacter -= 1;
+        if (_selectedCharacter < 0)
         {
-            selectedCharacter = _characters.Count-1;
+            _selectedCharacter = _characters.Count-1;
         }
 
-        UpdateSelected(selectedCharacter);
+        UpdateSelected(_selectedCharacter);
     }
 
     public void PlayGame()
@@ -136,5 +138,6 @@ public class PlayerManager : MonoBehaviour
         _characterDescription.text = _description[value];
         Debug.Log($"Selected: {value}");
     }
+    
     
 }
